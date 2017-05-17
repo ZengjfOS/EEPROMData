@@ -11,4 +11,7 @@
   * 设置需要传递的Linux内核参数；
   * 回写到I2C EEPROM数据；
 
-## 代码提取
+## 采用I2C控制器编写的相关代码
+
+* [eepromData.h](eepromData.h)
+* [eepromData.c](eepromData.c)
