@@ -54,7 +54,7 @@
 
 ## Code Struct Demo
 
-```
+```C
     static unsigned int AT24C02_read_data(unsigned int addr, int alen, uint8_t *buf, int len)
     {
         // ToDo   
