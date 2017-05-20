@@ -31,6 +31,7 @@
             /**
              * 0xFE和0xFF位址存放EEPROM Version ID, 长度为2 bytes, Low byte在0xFE, High Byte 在0xFF
              *   1. [0xfe]+256*[0xff]
+             * [0xfe]+256*[0xff]     protocol version
              */
             u16 version;
             /**
@@ -68,11 +69,11 @@
 
         struct eeprom_info
         {
-            u16 version;                                // [0xfe]+256*[0xff]     protocol version
-            u16 size;                                   // Max:64                accessable byte
+            u16 accessable_size;                        // Max:64                accessable byte
             u16 max_size;                               // eeprom max byte
             byte i2c_bus;                               // eeprom work at i2c bus number
             byte device_addr;                           // eeprom device address
+            byte address_length;                        // eeprom address register length
             byte mmc_bus;                               // load data from mmc bus number
             uchar content[EEPROM_SIZE];                 // content of eeprom from address 0 to eeprom_info.size
             struct eeprom_data data;                    // parse data of eeprom_info.content
@@ -85,8 +86,8 @@
         };
         struct eeprom_info AT24c02_eeprom;
 
-        static unsigned int AT24C02_read_data(unsigned int addr, int alen, uint8_t *buf, int len);
-        static unsigned int AT24C02_write_data(unsigned int addr, int alen, uint8_t *buf, int len);
+        static unsigned int AT24C02_read_data(byte i2c_bus, unsigned int addr, int alen, uint8_t *buf, int len);
+        static unsigned int AT24C02_write_data(byte i2c_bus, unsigned int addr, int alen, uint8_t *buf, int len);
         static void AT24C02_parse_data(void);
         static void AT24C02_synthesis_data(void);
         static int load_config_from_emmc(unsigned int version);
@@ -94,12 +95,12 @@
     ```
 * eeprom_info.c  
     ```C
-        static unsigned int AT24C02_read_data(unsigned int addr, int alen, uint8_t *buf, int len)
+        static unsigned int AT24C02_read_data(byte i2c_bus, unsigned int addr, int alen, uint8_t *buf, int len)
         {
             // Todo   
         }
 
-        static unsigned int AT24C02_write_data(unsigned int addr, int alen, uint8_t *buf, int len)
+        static unsigned int AT24C02_write_data(byte i2c_bus, unsigned int addr, int alen, uint8_t *buf, int len)
         {
             // Todo   
         }
