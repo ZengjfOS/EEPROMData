@@ -13,8 +13,8 @@
 
 ## 采用I2C控制器编写的相关代码
 
-* [eeprom_info.h](src/eeprom_info.h)
-* [eeprom_info.c](src/eeprom_info.c)
+* [eeprom_info.h](eeprom_info.h)
+* [eeprom_info.c](eeprom_info.c)
 
 ## 数据结构及软件架构
 
@@ -23,8 +23,7 @@
         #define EEPROM_I2C_BUS                  2
         #define EEPROM_I2C_ADDRESS              0x50
         #define EEPROM_MAX_SIZE                 64
-        #define EEPROM_ACCESSABLE_SIZE          64
-        #define EEPROM_ADDRESS_LENGTH           1
+        #define EEPROM_ACCESSABLE_SIZE                     64
         #define MMC_DEVICE_BUS                  1
      
         struct eeprom_data
@@ -83,7 +82,7 @@
             byte device_addr;                           // eeprom device address
             byte address_length;                        // eeprom address register length
             byte mmc_bus;                               // load data from mmc bus number
-            uchar content[EEPROM_ACCESSABLE_SIZE];      // content of eeprom from address 0 to eeprom_info.size
+            uchar content[EEPROM_SIZE];                 // content of eeprom from address 0 to eeprom_info.size
             struct eeprom_data data;                    // parse data of eeprom_info.content
             void (*init)(void);                         // init struct eeprom_info
             unsigned int (* read)(unsigned int addr, int alen, uint8_t *buf, int len);      // read data from eeprom
@@ -116,10 +115,10 @@
         static void AT24C02_parse_data(void)
         {
             // read eeprom protocol version
-            AT24c02_eeprom.read(AT24c02_eeprom.i2c_bus, 0xfe, AT24c02_eeprom.address_length, buffer, 2 )
+            AT24c02_eeprom.read( 0xfe, 1, buffer, 2 )
 
             // read eeprom 64(0x40) byte data
-            AT24c02_eeprom.read(AT24c02_eeprom.i2c_bus, 0x00, AT24c02_eeprom.address_length, AT24c02_eeprom.content, EEPROM_ACCESSABLE_SIZE)
+            AT24c02_eeprom.read(0x00, 1, AT24c02_eeprom.content, EEPROM_SIZE)
 
             // Todo   
         }
@@ -129,10 +128,10 @@
             // Todo   
 
             // write eeprom 64(0x40) byte data
-            AT24c02_eeprom.write(AT24c02_eeprom.i2c_bus, 0x00, AT24c02_eeprom.address_length, AT24c02_eeprom.content, EEPROM_ACCESSABLE_SIZE)
+            AT24c02_eeprom.write(0x00, 1, AT24c02_eeprom.content, EEPROM_SIZE)
 
             // write eeprom protocol version
-            AT24c02_eeprom.write(AT24c02_eeprom.i2c_bus, 0xfe, AT24c02_eeprom.address_length, buffer, 2 )
+            AT24c02_eeprom.write( 0xfe, 1, buffer, 2 )
         }
         
         static int load_config_from_emmc(unsigned int version)
@@ -145,13 +144,6 @@
         static void AT24C02_init(void)
         {
             //Todo
-
-            AT24c02_eeprom.accessable_size = EEPROM_ACCESSABLE_SIZE;
-            AT24c02_eeprom.max_size = EEPROM_MAX_SIZE;
-            AT24c02_eeprom.i2c_bus = EEPROM_I2C_BUS;
-            AT24c02_eeprom.device_addr = EEPROM_I2C_ADDRESS;
-            AT24c02_eeprom.address_length = EEPROM_ADDRESS_LENGTH;
-            AT24c02_eeprom.mmc_bus = MMC_DEVICE_BUS;
 
             AT24c02_eeprom.read = AT24C02_read_data;
             AT24c02_eeprom.write = AT24C02_write_data;
