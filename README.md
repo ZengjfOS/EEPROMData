@@ -20,11 +20,10 @@
 
 * eeprom_info.h
     ```C
-        #define EEPROM_I2C_BUS                  2
-        #define EEPROM_I2C_ADDRESS              0x50
+        #define EXPANSION_EEPROM_I2C_BUS        2
+        #define EXPANSION_EEPROM_I2C_ADDRESS    0x50
         #define EEPROM_MAX_SIZE                 64
-        #define EEPROM_ACCESSABLE_SIZE          64
-        #define EEPROM_ADDRESS_LENGTH           1
+        #define EEPROM_SIZE                     64
         #define MMC_DEVICE_BUS                  1
      
         struct eeprom_data
