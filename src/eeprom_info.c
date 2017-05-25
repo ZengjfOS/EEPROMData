@@ -24,14 +24,14 @@ extern void udelay(unsigned long usec);
 
 struct eeprom_info AT24c02_eeprom;
 #ifdef CONFIG_EEPROM_GPIO_I2C4
-#define GPIO_I2C_SCL	IMX_GPIO_NR(1, 28)
-#define GPIO_I2C_SDA	IMX_GPIO_NR(1, 29)
-/*	gpio i2c speed 
-    (5) 100k, 
-    (50) 10k
-    */
-#define I2C_DELAY_TIME		50
-#define I2C_DELAY			udelay(I2C_DELAY_TIME)
+#define GPIO_I2C_SCL    IMX_GPIO_NR(1, 28)
+#define GPIO_I2C_SDA    IMX_GPIO_NR(1, 29)
+/*    gpio i2c speed 
+      (5) 100k, 
+      (50) 10k
+      */
+#define I2C_DELAY_TIME          50
+#define I2C_DELAY               udelay(I2C_DELAY_TIME)
 
 static int i2c_gpio_sda_get(void)
 {
@@ -184,7 +184,7 @@ static int i2c_gpio_write_byte(uchar data)
     /* Look for an <ACK>(negative logic) and return it */
     i2c_gpio_sda_high();
     nack = i2c_gpio_check_nack();
-    return nack;	/* not a nack is an ack */
+    return nack;    /* not a nack is an ack */
 }
 
 static int i2c_gpio_wwrite_byte(uchar data)
@@ -200,7 +200,7 @@ static int i2c_gpio_wwrite_byte(uchar data)
     /* Look for an <ACK>(negative logic) and return it */
     i2c_gpio_sda_high();
     nack = i2c_gpio_check_nack();
-    return nack;	/* not a nack is an ack */
+    return nack;    /* not a nack is an ack */
 }
 
 static uchar i2c_gpio_read_byte(int ack)
@@ -226,7 +226,7 @@ int i2c_gpio_write_eeprom(uint addr, int alen, uchar *buffer, int len)
     uchar wrbyte=0x0;
 
     i2c_gpio_send_start();
-    if(i2c_gpio_write_byte(EEPROM_I2C_ADDRESS << 1)) {	/* write cycle */
+    if(i2c_gpio_write_byte(EEPROM_I2C_ADDRESS << 1)) {    /* write cycle */
         i2c_gpio_send_stop();
         puts("i2c_write, no chip responded\n");
         return(1);
@@ -296,10 +296,10 @@ int i2c_gpio_read_eeprom(uint addr, int alen, uchar *buffer, int len)
     }
     /*
      * Send the chip address again, this time for a read cycle.
-     * Then read the data.	On the last byte, we do a NACK instead
+     * Then read the data.    On the last byte, we do a NACK instead
      * of an ACK(len == 0) to terminate the read.
      */
-    i2c_gpio_write_byte((EEPROM_I2C_ADDRESS << 1) | 1);	/* read cycle */
+    i2c_gpio_write_byte((EEPROM_I2C_ADDRESS << 1) | 1);    /* read cycle */
     while(len-- > 0) {
         *buffer++ = i2c_gpio_read_byte(len == 0);
     }
@@ -355,7 +355,7 @@ int eeprom_i2c_parse_data(void)
         return 0;
     }
 
-    //	sprintf(buffer,"bAT24c02_eeprom.version(0x%04x)\n",AT24c02_eeprom.version);
+    //    sprintf(buffer,"bAT24c02_eeprom.version(0x%04x)\n",AT24c02_eeprom.version);
     AT24c02_eeprom.version=0+buffer[0]+(buffer[1]<<8);
     if(AT24c02_eeprom.version<0x0 || AT24c02_eeprom.version>0xf000)
     {
@@ -365,10 +365,10 @@ int eeprom_i2c_parse_data(void)
     {
         AT24c02_eeprom.read( 0x00, 1, AT24c02_eeprom.content, 0x40);
     }
-    //	sprintf(buffer,"aAT24c02_eeprom.version(0x%04x)\n",AT24c02_eeprom.version);
-    //	puts(buffer);
+    //    sprintf(buffer,"aAT24c02_eeprom.version(0x%04x)\n",AT24c02_eeprom.version);
+    //    puts(buffer);
     memset(&AT24c02_eeprom.data,0,sizeof(AT24c02_eeprom.data));
-    AT24c02_eeprom.data.version=3;		
+    AT24c02_eeprom.data.version=3;        
     i=0;
     datalength=0;
     while(i<0x40)
@@ -400,7 +400,7 @@ int eeprom_i2c_parse_data(void)
         }
         AT24c02_eeprom.size=i+datalength;
         i=i+datalength;
-    }	
+    }    
     return AT24c02_eeprom.version;
 }
 
